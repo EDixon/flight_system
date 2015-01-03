@@ -71,13 +71,16 @@ void loop(){
     if(gpsSerial.available()){
     // THIS IS THE MAIN LOOP JUST READS IN FROM THE GPS SERIAL
       gps.encode(gpsSerial.read()); 
-      gps.altitude.meters(); //more here: http://arduiniana.org/libraries/tinygpsplus/
     }
     if(counter == 10) {
       counter = 0;
       alt = gps.altitude.meters(); //more here: http://arduiniana.org/libraries/tinygpsplus/
       transmitSerial.print(gps.location.lat(), 7);
+<<<<<<< HEAD
       transmitSerial.print(gps.location.lng(), 7); //James amended long->lng
+=======
+      transmitSerial.print(gps.location.lng(), 7);
+>>>>>>> origin/master
       transmitSerial.print(gps.time.value());
       
       //read data from thermometer
