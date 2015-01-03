@@ -1,8 +1,18 @@
 #include <TinyGPS++.h>
 #include <SoftwareSerial.h>
+//see http://arduino.cc/en/Main/arduinoBoardMicro for pin layout of micro board
+
+int gps_input_pin = 4;
+int gps_output_pin = 5;
+int transmit_output_pin = 7;
+int transmit_input_pin = 6;
+int transmit_baud = 9600;
+double gps_long;
+double gps_lat;
+double alt;
  
-SoftwareSerial gpsSerial(4, 5);
-//add serial for UART output to transmitter
+SoftwareSerial gpsSerial(gps_input_pin, gps_output_pin);
+SoftwareSerial transmitSerial(transmit_input_pin, transmit_output_pin);
 //add serial for input from thermometer
 
 TinyGPSPlus gps;
@@ -14,6 +24,7 @@ int counter = 0;
 void setup()
 {
   gpsSerial.begin(9600); 
+  transmitSerial.begin(transmit_baud);
   // START OUR SERIAL DEBUG PORT
   //
   //Settings Array contains the following settings: [0]NavMode, [1]DataRate1, [2]DataRate2, [3]PortRateByte1, [4]PortRateByte2, [5]PortRateByte3, 
@@ -57,9 +68,12 @@ void loop(){
     }
     if(counter == 10) {
       counter = 0;
-      //read data stored in gps
+      alt = gps.altitude.meters(); //more here: http://arduiniana.org/libraries/tinygpsplus/
+      transmitSerial.print(gps.location.lat());
+      transmitSerial.print(gps.location.long());
+      transmitSerial.print(gps.time.value());
+      
       //read data from thermometer
-      //transmit resulting data string
     }
   } 
 }   
