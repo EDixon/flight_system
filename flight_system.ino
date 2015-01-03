@@ -69,7 +69,7 @@ void loop(){
       counter = 0;
       alt = gps.altitude.meters(); //more here: http://arduiniana.org/libraries/tinygpsplus/
       transmitSerial.print(gps.location.lat(), 7);
-      transmitSerial.print(gps.location.long(), 7);
+      transmitSerial.print(gps.location.lng(), 7);
       transmitSerial.print(gps.time.value());
       
       //read data from thermometer
