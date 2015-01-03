@@ -2,10 +2,12 @@
 #include <SoftwareSerial.h>
 //see http://arduino.cc/en/Main/arduinoBoardMicro for pin layout of micro board
 
-int gps_input_pin = 4;
-int gps_output_pin = 5;
-int transmit_output_pin = 7;
-int transmit_input_pin = 6;
+int gps_input_pin = 4; //Connect pin 4 to TX on GPS
+int gps_output_pin = 5; //Pin 5 to RX on GPS
+int transmit_output_pin = 7;//Pin 7 to RX on Transeiver
+int transmit_input_pin = 6; //Pin 6 to TX on Transeiver
+int GPS_EN = 3; //pin 3 to EN pin on GPS //James Added
+int TxRx_EN = 2;//pin 2 to EN pin on transeiver//James Added
 int transmit_baud = 9600;
 double gps_long;
 double gps_lat;
@@ -24,6 +26,8 @@ int counter = 0;
 void setup()
 {
   gpsSerial.begin(9600); 
+  pinMode(GPS_EN, OUTPUT); //James Added
+  pinMode(TxRx_EN, OUTPUT);//James Added
   transmitSerial.begin(transmit_baud);
   // START OUR SERIAL DEBUG PORT
   //
@@ -59,6 +63,9 @@ void setup()
 }
 
 void loop(){
+  
+  digitalWrite(GPS_EN,HIGH); //James Added
+  digitalWrite(TxRx_EN,HIGH); //James Added
   while(1) {
     counter = counter + 1;
     if(gpsSerial.available()){
@@ -70,7 +77,7 @@ void loop(){
       counter = 0;
       alt = gps.altitude.meters(); //more here: http://arduiniana.org/libraries/tinygpsplus/
       transmitSerial.print(gps.location.lat(), 7);
-      transmitSerial.print(gps.location.long(), 7);
+      transmitSerial.print(gps.location.lng(), 7); //James amended long->lng
       transmitSerial.print(gps.time.value());
       
       //read data from thermometer
