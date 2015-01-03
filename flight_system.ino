@@ -64,7 +64,6 @@ void loop(){
     if(gpsSerial.available()){
     // THIS IS THE MAIN LOOP JUST READS IN FROM THE GPS SERIAL
       gps.encode(gpsSerial.read()); 
-      gps.altitude.meters(); //more here: http://arduiniana.org/libraries/tinygpsplus/
     }
     if(counter == 10) {
       counter = 0;
